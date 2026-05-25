@@ -6,13 +6,12 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using Nox.CCK.Utils;
-using UnityEngine.Serialization;
 using Logger = Nox.CCK.Utils.Logger;
 
-namespace api.nox.statistics {
+namespace Nox.Statistics.Runtime {
 	public class Main : IMainModInitializer {
-		private       PlayTimeTracker _playTimeTracker;
-		public static IMainModCoreAPI  CoreAPI;
+		private PlayTimeTracker _playTimeTracker;
+		public static IMainModCoreAPI CoreAPI;
 
 		public void OnInitializeMain(IMainModCoreAPI api) {
 			CoreAPI          = api;
@@ -67,10 +66,10 @@ namespace api.nox.statistics {
 		private float _sessionStartTime;
 		private float _lastUpdateTime;
 		private float _lastSaveTime;
-		private bool  _isInitialized;
-		private bool  _isDisposed;
+		private bool _isInitialized;
+		private bool _isDisposed;
 
-		private readonly float  _saveInterval;
+		private readonly float _saveInterval;
 		private readonly string _saveDirectory;
 		private readonly string _currentSessionFile;
 		private readonly string _historyFile;
@@ -83,7 +82,8 @@ namespace api.nox.statistics {
 		}
 
 		public void Initialize() {
-			if (_isInitialized) return;
+			if (_isInitialized)
+				return;
 
 			LoadCurrentSession();
 
@@ -98,7 +98,8 @@ namespace api.nox.statistics {
 		}
 
 		public void Update() {
-			if (!_isInitialized || _isDisposed) return;
+			if (!_isInitialized || _isDisposed)
+				return;
 
 			var currentTime = Time.realtimeSinceStartup;
 			var deltaTime   = currentTime - _lastUpdateTime;
@@ -116,7 +117,8 @@ namespace api.nox.statistics {
 			_lastUpdateTime = currentTime;
 
 			// Sauvegarde périodique
-			if (!(currentTime - _lastSaveTime >= _saveInterval)) return;
+			if (!(currentTime - _lastSaveTime >= _saveInterval))
+				return;
 
 			SaveCurrentSession();
 			_lastSaveTime = currentTime;
@@ -124,12 +126,14 @@ namespace api.nox.statistics {
 
 		private void LoadCurrentSession() {
 			try {
-				if (!File.Exists(_currentSessionFile)) return;
+				if (!File.Exists(_currentSessionFile))
+					return;
 
 				var json  = File.ReadAllText(_currentSessionFile);
 				var stats = JsonConvert.DeserializeObject<TimeStatistics>(json);
 
-				if (stats == null || !IsFromToday(stats.SessionDate)) return;
+				if (stats == null || !IsFromToday(stats.SessionDate))
+					return;
 				_totalTime  = stats.totalTime;
 				_playTime   = stats.playTime;
 				_editorTime = stats.editorTime;
@@ -212,7 +216,8 @@ namespace api.nox.statistics {
 			=> _saveDirectory;
 
 		public void Dispose() {
-			if (_isDisposed) return;
+			if (_isDisposed)
+				return;
 
 			SaveCurrentSession();
 			SaveToHistory();

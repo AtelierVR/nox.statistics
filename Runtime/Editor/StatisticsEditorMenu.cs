@@ -2,13 +2,12 @@
 using UnityEngine;
 using UnityEditor;
 using System.IO;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Logger = Nox.CCK.Utils.Logger;
 
-namespace api.nox.statistics.Editor {
-	public class StatisticsEditorMenu {
+namespace Nox.Statistics.Runtime.Editor {
+	public static class StatisticsEditorMenu {
 		[MenuItem("Nox/Statistics/Open Statistics Folder")]
 		public static void OpenStatisticsFolder() {
 			var saveDirectory = Main.CoreAPI.ConfigAPI.GetFolder();
@@ -55,7 +54,8 @@ namespace api.nox.statistics.Editor {
 				} catch (System.Exception ex) {
 					message += $"Error reading current session: {ex.Message}\n\n";
 				}
-			} else message += "No current session found\n\n";
+			} else
+				message += "No current session found\n\n";
 
 			if (File.Exists(historyFile)) {
 				try {
@@ -72,7 +72,8 @@ namespace api.nox.statistics.Editor {
 				} catch (System.Exception ex) {
 					message += $"Error reading history: {ex.Message}";
 				}
-			} else message += "No history found";
+			} else
+				message += "No history found";
 
 			if (Logger.OpenDialog("Nox Statistics", message, "OK", "Copy to Clipboard"))
 				return;
