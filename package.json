@@ -1,0 +1,6 @@
+﻿{
+  "name": "nox.statistics",
+  "displayName": "Nox - Statistics",
+  "version": "1.0.0",
+  "description": "Tracks and exposes runtime statistics and performance metrics."
+}
